@@ -22,3 +22,15 @@ mongodb.initDb((err)=>{
 
 });
 
+
+//Test
+app.get('/db-test', async (req, res) => {
+  try {
+    const db = mongodb.getDatabase();
+    const collections = await db.listCollections().toArray();
+    res.json({ collections });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
