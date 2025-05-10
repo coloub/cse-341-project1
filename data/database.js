@@ -23,7 +23,8 @@ const initDb = (callback) => {
   MongoClient.connect(process.env.MONGODB_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    ssl: true,
+    tls: true,
+    tlsAllowInvalidCertificates: true, // Optional for testing, remove in production
   })
     .then((client) => {
       database = client.db(); // Puedes usar .db('project1') si quieres especificar el nombre
