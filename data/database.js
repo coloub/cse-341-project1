@@ -24,15 +24,14 @@ const initDb = (callback) => {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     tls: true,
-    tlsAllowInvalidCertificates: true, // Optional for testing, remove in production
   })
     .then((client) => {
-      database = client.db(); // Puedes usar .db('project1') si quieres especificar el nombre
+      database = client.db('project1'); // Puedes usar .db('project1') si quieres especificar el nombre
       console.log('✅ Connected to MongoDB Atlas');
       callback(null, database);
     })
     .catch((err) => {
-      console.error('❌ Error al conectar a MongoDB:', err);
+      console.error('❌ Error connecting to MongoDB:', err);
       callback(err);
     });
 };
