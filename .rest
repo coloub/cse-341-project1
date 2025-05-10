@@ -1,1 +1,1 @@
-GET https://cse-341-project1-d47t.onrender.com
+GET https://cse-341-project1-d47t.onrender.com/contacts
