@@ -3,11 +3,15 @@
 require('dotenv').config({ path: __dirname + '/.env' });
 
 const express = require('express');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./swagger');
 
 const mongodb = require('./data/database');
 const app = express();
 
 app.use(express.json());
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 const port = process.env.PORT || 3000;
 
