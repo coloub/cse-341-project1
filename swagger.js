@@ -1,69 +1,22 @@
-const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerAutogen = require('swagger-autogen')();
+const swaggerDocument = require('./swagger.json');
 
-const options = {
-  definition: {
-    openapi: '3.0.0',
-    info: {
-      title: 'Contacts API',
-      version: '1.0.0',
-      description: 'API documentation for Contacts management',
-    },
-    servers: [
-      {
-        url: process.env.BASE_URL || 'https://cse-341-project1-d47t.onrender.com',
-        description: 'Development server',
-      },
-    ],
-    components: {
-      schemas: {
-        Contact: {
-          type: 'object',
-          required: ['firstName', 'lastName', 'email', 'favoriteColor', 'birthday'],
-          properties: {
-            firstName: {
-              type: 'string',
-              example: 'John',
-            },
-            lastName: {
-              type: 'string',
-              example: 'Doe',
-            },
-            email: {
-              type: 'string',
-              format: 'email',
-              example: 'john.doe@example.com',
-            },
-            favoriteColor: {
-              type: 'string',
-              example: 'blue',
-            },
-            birthday: {
-              type: 'string',
-              format: 'date',
-              example: '1990-01-01',
-            },
-          },
-        },
-        ContactId: {
-          type: 'string',
-          description: 'Contact ID',
-          example: '60d0fe4f5311236168a109ca',
-        },
-        ErrorResponse: {
-          type: 'object',
-          properties: {
-            message: {
-              type: 'string',
-              example: 'Error message',
-            },
-          },
-        },
-      },
-    },
+const doc = {
+  swagger: "2.0",
+  info: {
+    title: 'Contacts Api',
+    description: 'Contacts Api'
   },
-  apis: ['./routes/*.js'],
+  host: 'localhost:3000',
+  schemes: ['http', 'https']
 };
 
-const swaggerSpec = swaggerJSDoc(options);
+const outputFile = './swagger.json';
+const endpointsFiles = ['./routes/index.js', './routes/contacts.js'];
 
-module.exports = swaggerSpec;
+// this will generate swagger.json
+(async () => {
+  await swaggerAutogen(outputFile, endpointsFiles, doc);
+})();
+
+module.exports = swaggerDocument;
