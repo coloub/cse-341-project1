@@ -1,21 +1,32 @@
 const mongodb = require('../data/database');
 const ObjectId =  require('mongodb').ObjectId;
 
-const getAll = async (req,res) => {
-    const result = await mongodb.getDatabase().collection('contacts').find();
-    result.toArray().then((contacts) => {
-        res.setHeader('Content-Type','application/json');
+const getAll = async (req, res) => {
+    try {
+        const result = await mongodb.getDatabase().collection('contacts').find();
+        const contacts = await result.toArray();
+        res.setHeader('Content-Type', 'application/json');
         res.status(200).json(contacts);
-    });
+    } catch (error) {
+        console.error('Error getting all contacts:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
 };
 
-const getSingle = async (req,res) => {
-    const contactsId = new ObjectId(req.params.id)
-    const result = await mongodb.getDatabase().collection('contacts').find({_id: contactsId});
-    result.toArray().then((contacts) => {
-        res.setHeader('Content-Type','application/json');
+const getSingle = async (req, res) => {
+    try {
+        const contactsId = new ObjectId(req.params.id);
+        const result = await mongodb.getDatabase().collection('contacts').find({ _id: contactsId });
+        const contacts = await result.toArray();
+        if (contacts.length === 0) {
+            return res.status(404).json({ message: 'Contact not found' });
+        }
+        res.setHeader('Content-Type', 'application/json');
         res.status(200).json(contacts[0]);
-    });
+    } catch (error) {
+        console.error('Error getting single contact:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
 };
 
 const createContact = async (req, res) => {
